@@ -22,12 +22,12 @@ class ScreenChangePasswordView extends GetView<ScreenChangePasswordController> {
     return Scaffold(
       backgroundColor: scaffoldBG,
       appBar: AppBar(
-        title: const Text('Forgot password'),
+        title:  Text('Forgot password',style: TextStyle(color: black,fontWeight: FontWeight.bold),),
         centerTitle: true,
         backgroundColor: scaffoldBG,
         elevation: 0.0,
         leading: IconButton(
-            icon: const Icon(Icons.close, size: 35),
+            icon:  Icon(Icons.close, size: 35,color: blue,),
             onPressed: () => Get.back()),
       ),
       body: Padding(
@@ -35,7 +35,7 @@ class ScreenChangePasswordView extends GetView<ScreenChangePasswordController> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-             Text("You will recive an email to reset your password",style: TextStyle(color: white,fontSize: 18),),
+             Text("You will recive an email to reset your password",style: TextStyle(color: amber,fontSize: 18,fontWeight: FontWeight.bold),),
             SizedBox(height: mqH * 0.025),
             SizedBox(
               height: 70,

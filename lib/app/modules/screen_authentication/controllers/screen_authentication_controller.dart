@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_example/app/data/common_widgets/colors.dart';
+import 'package:firebase_auth_example/app/data/common_widgets/image_picker_controller.dart';
 import 'package:firebase_auth_example/app/data/firebase_database/fire_database.dart';
 import 'package:firebase_auth_example/app/data/firebase_database/user_data_model.dart';
 import 'package:firebase_auth_example/app/modules/screen_change_password/controllers/screen_change_password_controller.dart';
 import 'package:firebase_auth_example/app/modules/screen_signin/controllers/screen_signin_controller.dart';
 import 'package:firebase_auth_example/app/modules/screen_signin/views/screen_signin_view.dart';
 import 'package:firebase_auth_example/app/modules/screen_signup/controllers/screen_signup_controller.dart';
-import 'package:firebase_auth_example/app/modules/screen_signup/widgets/account_created_dialogue.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,6 +17,7 @@ class ScreenAuthenticationController extends GetxController {
   final signInController = Get.put(ScreenSigninController());
   final signupController = Get.put(ScreenSignupController());
   final forgotController = Get.put(ScreenChangePasswordController());
+  final imageController = Get.put(ImageController());
   bool passwordVisible = true;
 
   // Password obscure text visibility change
@@ -26,7 +27,9 @@ class ScreenAuthenticationController extends GetxController {
   }
 
   //  sign in with email and password
-  Future signInWithEmail(context) async {
+  Future signInWithEmail() async {
+    final isValid = signInController.signformKey.currentState!.validate();
+    if (!isValid) return;
     try {
       await _auth.signInWithEmailAndPassword(
         email: signInController.emailController.text.trim(),
@@ -34,11 +37,11 @@ class ScreenAuthenticationController extends GetxController {
       );
     } on FirebaseAuthException catch (e) {
       final erroMessage = e.message;
-      Get.snackbar("", "",
+      Get.snackbar("Error", "",
           snackStyle: SnackStyle.GROUNDED,
-          titleText: Text(
+          messageText: Text(
             erroMessage.toString(),
-            style: TextStyle(color: white),
+            style: TextStyle(color: red),
           ));
     }
   }
@@ -46,6 +49,9 @@ class ScreenAuthenticationController extends GetxController {
 // signUp with Email and Password
   Future signUp() async {
     bool success;
+    imageController.stringOfimg == ""
+        ? Get.snackbar("Please choose an image", "")
+        : null;
     final isValid = signupController.formKey.currentState!.validate();
     if (!isValid) return;
     try {
@@ -55,27 +61,32 @@ class ScreenAuthenticationController extends GetxController {
       User user = results.user!;
 
       await FirebaseDB().createUserData(UserModel(
+        imageString: imageController.stringOfimg,
         name: signupController.userNameController.text.trim(),
         job: signupController.jobController.text.trim(),
-        phone: signupController.numberController.text.trim(),
-        mail: user.email.toString(),
+        number: signupController.numberController.text.trim(),
+        email: user.email.toString(),
         uid: user.uid,
       ));
       success = true;
-      // return results;
-
     } on FirebaseAuthException catch (e) {
       final erroMessage = e.message;
-      Get.snackbar("", "",
+      Get.snackbar("Error", "",
           snackStyle: SnackStyle.GROUNDED,
-          titleText: Text(
+          messageText: Text(
             erroMessage.toString(),
-            style: TextStyle(color: white),
+            style: TextStyle(color: red),
           ));
       success = false;
     }
-
-    success == true ? Get.dialog(const AccountCreated()) : null;
+    signupController.userNameController.text="";
+    signupController.jobController.text="";
+    signupController.emailController.text="";
+    signupController.passwordController.text="";
+    signupController.numberController.text="";
+    imageController.stringOfimg="";
+    Get.to(ScreenSigninView());
+    // success == true ? Get.dialog(const AccountCreated()) : null;
   }
 
 //  Verify reset password Email

@@ -1,7 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ScreenSignupController extends GetxController {
+
 
   GlobalKey<FormState> formKey =GlobalKey<FormState>();
   
@@ -11,11 +13,7 @@ class ScreenSignupController extends GetxController {
   final jobController = TextEditingController();
   final numberController = TextEditingController();
 
-  
-  
 
-
-  // final count = 0.obs;
 
 
 

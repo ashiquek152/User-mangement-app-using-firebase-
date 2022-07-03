@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth_example/app/data/common_widgets/colors.dart';
+import 'package:firebase_auth_example/app/data/common_widgets/image_picker_controller.dart';
 import 'package:firebase_auth_example/app/data/common_widgets/textfield_decoration.dart';
 import 'package:firebase_auth_example/app/modules/screen_authentication/controllers/screen_authentication_controller.dart';
 import 'package:firebase_auth_example/app/modules/screen_signin/views/screen_signin_view.dart';
@@ -7,7 +10,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 
 import '../controllers/screen_signup_controller.dart';
 
@@ -16,23 +18,62 @@ class ScreenSignupView extends GetView<ScreenSignupController> {
 
   final authServices = Get.put(ScreenAuthenticationController());
   final signUpController = Get.put(ScreenSignupController());
-  
+  final imgControler = Get.put(ImageController());
+
   @override
   Widget build(BuildContext context) {
     double mqW = MediaQuery.of(context).size.width;
     double mqH = MediaQuery.of(context).size.height;
+
     return Scaffold(
         backgroundColor: scaffoldBG,
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
+            padding: const EdgeInsets.fromLTRB(16.0, 25.0, 16.0, 0.0),
             child: Form(
               key: signUpController.formKey,
               child: ListView(
                 children: [
-                  SizedBox(
-                      child: Lottie.asset("assets/login-and-sign-up.json",
-                          fit: BoxFit.fill, repeat: false)),
+                  GetBuilder<ImageController>(builder: (ctx) {
+                    return ctx.stringOfimg == ''
+                        ? CircleAvatar(
+                            radius: 70,
+                            backgroundColor: white,
+                            child: const SizedBox(
+                              height: 120,
+                              width: 120,
+                              child: ClipOval(
+                                  child: Image(
+                                      fit: BoxFit.cover,
+                                      image: AssetImage("assets/sample2.jpg"))),
+                            ),
+                          )
+                        : CircleAvatar(
+                            radius: 70,
+                            backgroundColor: white,
+                            child: SizedBox(
+                              height: 120,
+                              width: 120,
+                              child: ClipOval(
+                                child: Image(
+                                  fit: BoxFit.cover,
+                                  image: MemoryImage(
+                                    const Base64Decoder()
+                                        .convert(ctx.stringOfimg),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                  }),
+                  IconButton(
+                      onPressed: () {
+                        imgControler.pickCameraImage();
+                      },
+                      icon: Icon(
+                        Icons.camera,
+                        color: amber,
+                      )),
                   SizedBox(height: mqH * 0.01),
                   SizedBox(
                     height: 70,
@@ -128,6 +169,8 @@ class ScreenSignupView extends GetView<ScreenSignupController> {
                           text: "Have an account ? ",
                           style: TextStyle(
                             fontSize: mqH * 0.019,
+                            color: black,
+                            fontWeight: FontWeight.bold
                           ),
                           children: [
                             TextSpan(
@@ -138,7 +181,7 @@ class ScreenSignupView extends GetView<ScreenSignupController> {
                               style: TextStyle(
                                 decoration: TextDecoration.underline,
                                 fontSize: mqH * 0.02,
-                                color: Colors.white,
+                                color: red,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

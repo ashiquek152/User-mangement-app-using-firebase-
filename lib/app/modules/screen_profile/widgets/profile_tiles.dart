@@ -5,10 +5,9 @@ class ProfileTiles extends StatelessWidget {
   const ProfileTiles({
     Key? key, required this.icon, required this.iconColor, required this.title, required this.titleType,
   }) : super(key: key);
+
  final String title;
  final String titleType;
-
-
   final IconData icon;
  final Color iconColor;
 

@@ -1,5 +1,3 @@
-import 'package:firebase_auth_example/app/data/common_widgets/colors.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ScreenProfileController extends GetxController {
@@ -20,9 +18,9 @@ class ScreenProfileController extends GetxController {
   //   super.onClose();
   // }
 
-  List <String> profileItems =["NAME","OCCUPATION","PHONE NUMBER","EMAIL ID"];
-  List <IconData> profileIcons =[Icons.account_circle_outlined,Icons.work,Icons.phone_android_rounded,Icons.alternate_email_outlined];
-  List <Color> iconColor = [blue,Colors.pink,Colors.green,Colors.yellow.shade400];
-  List <String> titleType = ["Name","Occupation","Phone","Email"];
+  // List <String> profileItems =["NAME","OCCUPATION","PHONE NUMBER","EMAIL ID"];
+  // List <IconData> profileIcons =[Icons.account_circle_outlined,Icons.work,Icons.phone_android_rounded,Icons.alternate_email_outlined];
+  // List <Color> iconColor = [blue,Colors.pink,Colors.green,Colors.yellow.shade400];
+  // List <String> titleType = ["Name","Occupation","Phone","Email"];
 
 }

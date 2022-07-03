@@ -5,6 +5,8 @@ class ScreenSigninController extends GetxController {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final userNameController = TextEditingController();
+  GlobalKey<FormState> signformKey =GlobalKey<FormState>();
+
 
   // final count = 0.obs;
   // @override

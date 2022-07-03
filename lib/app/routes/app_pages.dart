@@ -50,7 +50,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.SCREEN_UPDATE,
-      page: () => const ScreenUpdateView(),
+      page: () =>  ScreenUpdateView(),
       binding: ScreenUpdateBinding(),
     ),
     GetPage(
