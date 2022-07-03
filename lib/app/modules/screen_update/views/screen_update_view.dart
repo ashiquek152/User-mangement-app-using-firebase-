@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:firebase_auth_example/app/data/common_widgets/colors.dart';
 import 'package:firebase_auth_example/app/data/common_widgets/image_picker_controller.dart';
 import 'package:firebase_auth_example/app/data/common_widgets/textfield_decoration.dart';
-import 'package:firebase_auth_example/app/modules/home/views/home_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -29,6 +28,17 @@ class ScreenUpdateView extends GetView<ScreenUpdateController> {
 
     return Scaffold(
         backgroundColor: scaffoldBG,
+        appBar: AppBar(
+          backgroundColor: scaffoldBG,
+          elevation: 0.0,
+          leading: IconButton(
+              onPressed: () => Get.back(),
+              icon: Icon(
+                Icons.clear_outlined,
+                size: 40,
+                color: blue,
+              )),
+        ),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16.0, 25.0, 16.0, 0.0),
@@ -36,7 +46,8 @@ class ScreenUpdateView extends GetView<ScreenUpdateController> {
               key: updateController.formKey,
               child: ListView(
                 children: [
-                 imgControler.stringOfimg == ''
+                 GetBuilder<ImageController>(builder: (ctx) {
+                          return imgControler.stringOfimg == ''
                       ? CircleAvatar(
                           radius: 70,
                           backgroundColor: white,
@@ -53,8 +64,7 @@ class ScreenUpdateView extends GetView<ScreenUpdateController> {
                             )),
                           ),
                         )
-                      : GetBuilder<ImageController>(builder: (ctx) {
-                          return CircleAvatar(
+                      :  CircleAvatar(
                             radius: 70,
                             backgroundColor: white,
                             child: SizedBox(
@@ -73,8 +83,8 @@ class ScreenUpdateView extends GetView<ScreenUpdateController> {
                           );
                         }),
                   IconButton(
-                      onPressed: ()async {
-                        await imgControler.pickCameraImage();
+                      onPressed: () async {
+                       await imgControler.bottomSheet();
                       },
                       icon: Icon(
                         Icons.camera,
@@ -83,8 +93,8 @@ class ScreenUpdateView extends GetView<ScreenUpdateController> {
                   const SizedBox(height: 10),
                   SizedBox(
                     height: 70,
-                    child: GetBuilder<ScreenUpdateController>(
-                        builder: (context) {
+                    child:
+                        GetBuilder<ScreenUpdateController>(builder: (context) {
                       return TextFormField(
                         maxLength: 15,
                         decoration: textFieldDecoration("Username"),
@@ -100,8 +110,8 @@ class ScreenUpdateView extends GetView<ScreenUpdateController> {
                   const SizedBox(height: 10),
                   SizedBox(
                     height: 70,
-                    child: GetBuilder<ScreenUpdateController>(
-                        builder: (context) {
+                    child:
+                        GetBuilder<ScreenUpdateController>(builder: (context) {
                       return TextFormField(
                         maxLength: 10,
                         decoration: textFieldDecoration("Mobile Number"),
@@ -116,8 +126,8 @@ class ScreenUpdateView extends GetView<ScreenUpdateController> {
                   const SizedBox(height: 10),
                   SizedBox(
                     height: 70,
-                    child: GetBuilder<ScreenUpdateController>(
-                        builder: (context) {
+                    child:
+                        GetBuilder<ScreenUpdateController>(builder: (context) {
                       return TextFormField(
                         maxLength: 15,
                         decoration: textFieldDecoration("Occupation"),
@@ -136,11 +146,11 @@ class ScreenUpdateView extends GetView<ScreenUpdateController> {
                         style: ElevatedButton.styleFrom(
                           primary: black,
                         ),
-                        onPressed: () async =>
-                            await updateController.updateData(
-                                data["email"].toString(),
-                                data["id"].toString()).whenComplete(() => Get.offAll(HomeView())),
-                        child: const Text("Update")),
+                        onPressed: () async => await updateController
+                            .updateData(
+                                data["email"].toString(), data["id"].toString(),data["stringImg"].toString())
+                            .whenComplete(() => Get.back()),
+                        child: const Text("Save")),
                   ),
                 ],
               ),

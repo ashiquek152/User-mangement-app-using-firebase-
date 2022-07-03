@@ -36,15 +36,16 @@ class ScreenUpdateController extends GetxController {
   final imgContoller =Get.put(ImageController());
 
   // Update Userdata
-  Future updateData(String email,String uid) async {
+  Future updateData(String email,String uid,var image) async {
     await FirebaseDB().updateUserData(UserModel(
       email: email,
       job: jobController.text.trim(),
       name: userNameController.text.trim(),
       number: numberController.text.trim(),
-      imageString: imgContoller.stringOfimg,
+      imageString: imgContoller.stringOfimg==""?image:imgContoller.stringOfimg,
       uid: uid,
     ));
-    Get.back();
+    imgContoller.stringOfimg="";
+    // Get.back();
   }
 }

@@ -5,7 +5,6 @@ import 'package:firebase_auth_example/app/data/common_widgets/colors.dart';
 import 'package:firebase_auth_example/app/data/common_widgets/image_picker_controller.dart';
 import 'package:firebase_auth_example/app/data/common_widgets/textfield_decoration.dart';
 import 'package:firebase_auth_example/app/modules/screen_authentication/controllers/screen_authentication_controller.dart';
-import 'package:firebase_auth_example/app/modules/screen_signin/views/screen_signin_view.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -45,7 +44,7 @@ class ScreenSignupView extends GetView<ScreenSignupController> {
                               child: ClipOval(
                                   child: Image(
                                       fit: BoxFit.cover,
-                                      image: AssetImage("assets/sample2.jpg"))),
+                                      image: AssetImage("assets/man.png"))),
                             ),
                           )
                         : CircleAvatar(
@@ -68,7 +67,7 @@ class ScreenSignupView extends GetView<ScreenSignupController> {
                   }),
                   IconButton(
                       onPressed: () {
-                        imgControler.pickCameraImage();
+                        imgControler.bottomSheet();
                       },
                       icon: Icon(
                         Icons.camera,
@@ -176,7 +175,7 @@ class ScreenSignupView extends GetView<ScreenSignupController> {
                             TextSpan(
                               recognizer: TapGestureRecognizer()
                                 ..onTap =
-                                    () => Get.offAll(() => ScreenSigninView()),
+                                    () => Get.back(),
                               text: "Sign in",
                               style: TextStyle(
                                 decoration: TextDecoration.underline,

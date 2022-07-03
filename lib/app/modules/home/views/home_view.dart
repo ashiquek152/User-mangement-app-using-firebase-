@@ -15,32 +15,17 @@ class HomeView extends GetView<HomeController> {
 
   final homeController = Get.put(HomeController());
 
-  final firebaseAuth = FirebaseAuth.instance;
+  final String currentUser =
+      FirebaseAuth.instance.currentUser!.email.toString();
+  final String currentUserID =
+      FirebaseAuth.instance.currentUser!.uid.toString();
+  final Stream<QuerySnapshot> streamData =
+      FirebaseFirestore.instance.collection("Users").snapshots();
 
   @override
   Widget build(BuildContext context) {
-    final String currentUserID = firebaseAuth.currentUser!.uid.toString();
-    final Stream<QuerySnapshot> streamData =
-        FirebaseFirestore.instance.collection("Users").snapshots();
-
     return Scaffold(
       backgroundColor: scaffoldBG,
-      appBar: AppBar(
-        backgroundColor: scaffoldBG,
-        elevation: 0.0,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right:8.0),
-            child: IconButton(
-                onPressed: () async{
-                  return await firebaseAuth.signOut();
-                },
-                icon:  Icon(Icons.logout,color: blue,size: 35,)),
-          )
-        ],
-        title:  Text('Users List',style: TextStyle(color: amber,fontWeight: FontWeight.bold,fontSize: 25),),
-        centerTitle: true,
-      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -65,67 +50,80 @@ class HomeView extends GetView<HomeController> {
                     a["id"] = document.id;
                   }).toList();
 
-                  return Expanded(
-                    flex: 1,
-                    child: SizedBox(
-                      height: 300,
-                      child: ListView.separated(
-                        itemCount: usersData.length,
-                        itemBuilder: (context, index) {
-                          final data = usersData[index];
-                          return GestureDetector(
-                            onTap: () => Get.to(ScreenProfileView(
-                              data: data,
-                              currentUseruid: currentUserID,
-                            )),
-                            child: Container(
-                              decoration: BoxDecoration(
-                              color: blue,
-                              borderRadius: BorderRadius.circular(25),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Column(
-                                  children: [
-                                    Row(
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ElevatedButton.icon(
+                                  style:ElevatedButton.styleFrom(primary: black),
+                                  onPressed: () async =>await FirebaseAuth.instance.signOut(),
+                                  icon: Icon(Icons.logout, color: blue),
+                                  label: const Text("Sign out"))]),
+                        Text("Signed in as $currentUser",
+                            style: TextStyle(
+                                color: blue,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15)),
+                        const SizedBox(height: 10),
+                        SizedBox(
+                          height: 600,
+                          child: ListView.separated(
+                            itemCount: usersData.length,
+                            itemBuilder: (context, index) {
+                              final data = usersData[index];
+                              return GestureDetector(
+                                onTap: () => Get.to(ScreenProfileView(
+                                  data: data,
+                                  currentUseruid: currentUserID)),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: black,
+                                    borderRadius: BorderRadius.circular(25)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Column(
                                       children: [
-                                        Container(
-                                          height: 50,
-                                          width: 50,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(25),
-                                              image: DecorationImage(
-                                                fit: BoxFit.fill,
-                                            image: MemoryImage(
-                                              const Base64Decoder().convert(
-                                                  usersData[index]
-                                                      ["stringImg"]),
+                                        Row(
+                                          children: [
+                                            Container(
+                                              height: 50,
+                                              width: 50,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(25),
+                                                  image: DecorationImage(
+                                                    fit: BoxFit.fill,
+                                                    image: MemoryImage(
+                                                      const Base64Decoder()
+                                                          .convert(
+                                                            usersData[index]
+                                                              ["stringImg"]))))),
+                                            const SizedBox(width: 10),
+                                            Text(
+                                              usersData[index]["name"]
+                                                  .toString()
+                                                  .toUpperCase(),
+                                              style: TextStyle(
+                                                  color: white,
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold),
                                             ),
-                                          )),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Text(
-                                          usersData[index]["name"]
-                                              .toString()
-                                              .toUpperCase(),
-                                          style: TextStyle(
-                                              color: white,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
-                                        ),
+                                          ],
+                                        )
                                       ],
-                                    )
-                                  ],
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          );
-                        },
-                        separatorBuilder: (context,_){
-                          return const SizedBox(height: 10);
-                        },
-
-                      ),
+                              );
+                            },
+                            separatorBuilder: (context, _) {
+                              return const SizedBox(height: 10);
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   );
                 },

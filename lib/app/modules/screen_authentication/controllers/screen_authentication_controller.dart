@@ -28,7 +28,7 @@ class ScreenAuthenticationController extends GetxController {
 
   //  sign in with email and password
   Future signInWithEmail() async {
-    final isValid = signInController.signformKey.currentState!.validate();
+    final isValid =signInController.signformKey.currentState!.validate();
     if (!isValid) return;
     try {
       await _auth.signInWithEmailAndPassword(
@@ -48,11 +48,10 @@ class ScreenAuthenticationController extends GetxController {
 
 // signUp with Email and Password
   Future signUp() async {
-    bool success;
-    imageController.stringOfimg == ""
+     imageController.stringOfimg == ""
         ? Get.snackbar("Please choose an image", "")
         : null;
-    final isValid = signupController.formKey.currentState!.validate();
+    final isValid =imageController.stringOfimg!=""&& signupController.formKey.currentState!.validate();
     if (!isValid) return;
     try {
       UserCredential results = await _auth.createUserWithEmailAndPassword(
@@ -68,7 +67,6 @@ class ScreenAuthenticationController extends GetxController {
         email: user.email.toString(),
         uid: user.uid,
       ));
-      success = true;
     } on FirebaseAuthException catch (e) {
       final erroMessage = e.message;
       Get.snackbar("Error", "",
@@ -77,16 +75,13 @@ class ScreenAuthenticationController extends GetxController {
             erroMessage.toString(),
             style: TextStyle(color: red),
           ));
-      success = false;
     }
-    signupController.userNameController.text="";
-    signupController.jobController.text="";
-    signupController.emailController.text="";
-    signupController.passwordController.text="";
-    signupController.numberController.text="";
-    imageController.stringOfimg="";
-    Get.to(ScreenSigninView());
-    // success == true ? Get.dialog(const AccountCreated()) : null;
+    signupController.userNameController.text = "";
+    signupController.jobController.text = "";
+    signupController.emailController.text = "";
+    signupController.passwordController.text = "";
+    signupController.numberController.text = "";
+    imageController.stringOfimg = "";
   }
 
 //  Verify reset password Email
@@ -110,11 +105,5 @@ class ScreenAuthenticationController extends GetxController {
             style: TextStyle(color: white),
           ));
     }
-  }
-
-  // Get CURRENT USER uid
-
-  Future<String> getCurrentUid() async {
-    return _auth.currentUser!.uid.toString();
   }
 }
