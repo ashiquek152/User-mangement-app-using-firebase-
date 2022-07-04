@@ -56,7 +56,7 @@ class ScreenSigninView extends GetView<ScreenSigninController> {
                       return TextFormField(
                         decoration: textFieldDecoration("Password"),
                         controller: signInController.passwordController,
-                         validator: (password) =>
+                        validator: (password) =>
                             password != null && password.length < 6
                                 ? "Enter min 6 characters"
                                 : null,
@@ -77,6 +77,30 @@ class ScreenSigninView extends GetView<ScreenSigninController> {
                           await authServices.signInWithEmail();
                         },
                         label: const Text("Sign in")),
+                  ),
+                  SizedBox(height: mqH * 0.03),
+                  Center(
+                    child: SizedBox(
+                      height: mqH * 0.06,
+                      width: mqW * 0.5,
+                      // color: red,
+                      child: Row(
+                        children: [
+                          Container(
+                            height: mqH * 0.04,
+                            width: mqW * 0.14,
+                            decoration: const BoxDecoration(
+                                // color: blue,
+                                image: DecorationImage(
+                              fit: BoxFit.contain,
+                              image: AssetImage("assets/Google.png"),
+                            )),
+                          ),
+                          const Text("Sign In with Google ")
+                        ],
+                      ),
+                      // decoration: BoxDecoration(),
+                    ),
                   ),
                   SizedBox(height: mqH * 0.03),
                   Center(

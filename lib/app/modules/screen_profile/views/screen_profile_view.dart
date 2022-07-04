@@ -55,7 +55,7 @@ class ScreenProfileView extends GetView<ScreenProfileController> {
             child: Center(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16.0, 100.0, 16, 0.0),
-            child: Column(
+            child: ListView(
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -78,35 +78,33 @@ class ScreenProfileView extends GetView<ScreenProfileController> {
                   ],
                 ),
                 const SizedBox(height: 40),
-                Expanded(
-                  child: Column(
-                    children: [
-                      ProfileTiles(
-                        icon: Icons.account_circle_outlined,
-                        iconColor: blue,
-                        title: data['name'],
-                        titleType: "Name",
-                      ),
-                      ProfileTiles(
-                        icon: Icons.work,
-                        iconColor: Colors.pink,
-                        title: data['job'],
-                        titleType: "Job",
-                      ),
-                      ProfileTiles(
-                        icon: Icons.phone_android_rounded,
-                        iconColor: Colors.green,
-                        title: data['number'],
-                        titleType: "Phone",
-                      ),
-                      ProfileTiles(
-                        icon: Icons.phone_android_rounded,
-                        iconColor: Colors.yellow.shade400,
-                        title: data['email'],
-                        titleType: "Email",
-                      ),
-                    ],
-                  ),
+                Column(
+                  children: [
+                    ProfileTiles(
+                      icon: Icons.account_circle_outlined,
+                      iconColor: blue,
+                      title: data['name'],
+                      titleType: "Name",
+                    ),
+                    ProfileTiles(
+                      icon: Icons.work,
+                      iconColor: Colors.pink,
+                      title: data['job'],
+                      titleType: "Job",
+                    ),
+                    ProfileTiles(
+                      icon: Icons.phone_android_rounded,
+                      iconColor: Colors.green,
+                      title: data['number'],
+                      titleType: "Phone",
+                    ),
+                    ProfileTiles(
+                      icon: Icons.phone_android_rounded,
+                      iconColor: Colors.yellow.shade400,
+                      title: data['email'],
+                      titleType: "Email",
+                    ),
+                  ],
                 ),
               ],
             ),

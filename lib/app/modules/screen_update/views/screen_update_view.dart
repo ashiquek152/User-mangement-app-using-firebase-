@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:firebase_auth_example/app/data/common_widgets/colors.dart';
 import 'package:firebase_auth_example/app/data/common_widgets/image_picker_controller.dart';
 import 'package:firebase_auth_example/app/data/common_widgets/textfield_decoration.dart';
+import 'package:firebase_auth_example/app/modules/screen_authentication/views/screen_authentication_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -149,7 +150,7 @@ class ScreenUpdateView extends GetView<ScreenUpdateController> {
                         onPressed: () async => await updateController
                             .updateData(
                                 data["email"].toString(), data["id"].toString(),data["stringImg"].toString())
-                            .whenComplete(() => Get.back()),
+                            .whenComplete(() => Get.offAll(ScreenAuthenticationView())),
                         child: const Text("Save")),
                   ),
                 ],

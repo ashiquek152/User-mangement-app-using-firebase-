@@ -158,7 +158,9 @@ class ScreenSignupView extends GetView<ScreenSignupController> {
                         style: ElevatedButton.styleFrom(
                           primary: black,
                         ),
-                        onPressed: () async => await authServices.signUp(),
+                        onPressed: () async {
+                          await authServices.signUp();
+                        } ,
                         child: const Text("Register")),
                   ),
                   SizedBox(height: mqH * 0.03),

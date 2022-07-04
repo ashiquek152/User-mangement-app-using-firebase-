@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_example/app/data/common_widgets/colors.dart';
 import 'package:firebase_auth_example/app/data/common_widgets/image_picker_controller.dart';
+import 'package:firebase_auth_example/app/data/common_widgets/loading_widget.dart';
 import 'package:firebase_auth_example/app/data/firebase_database/fire_database.dart';
 import 'package:firebase_auth_example/app/data/firebase_database/user_data_model.dart';
 import 'package:firebase_auth_example/app/modules/screen_change_password/controllers/screen_change_password_controller.dart';
@@ -19,6 +20,7 @@ class ScreenAuthenticationController extends GetxController {
   final forgotController = Get.put(ScreenChangePasswordController());
   final imageController = Get.put(ImageController());
   bool passwordVisible = true;
+  // RxBool loading = false.obs;
 
   // Password obscure text visibility change
   passwordVisibility() {
@@ -30,6 +32,7 @@ class ScreenAuthenticationController extends GetxController {
   Future signInWithEmail() async {
     final isValid =signInController.signformKey.currentState!.validate();
     if (!isValid) return;
+    Get.dialog(const LoadingWidget());
     try {
       await _auth.signInWithEmailAndPassword(
         email: signInController.emailController.text.trim(),
@@ -44,6 +47,7 @@ class ScreenAuthenticationController extends GetxController {
             style: TextStyle(color: red),
           ));
     }
+    Get.back();
   }
 
 // signUp with Email and Password
@@ -53,6 +57,7 @@ class ScreenAuthenticationController extends GetxController {
         : null;
     final isValid =imageController.stringOfimg!=""&& signupController.formKey.currentState!.validate();
     if (!isValid) return;
+    Get.dialog(const LoadingWidget());
     try {
       UserCredential results = await _auth.createUserWithEmailAndPassword(
           email: signupController.emailController.text.trim(),
@@ -67,6 +72,7 @@ class ScreenAuthenticationController extends GetxController {
         email: user.email.toString(),
         uid: user.uid,
       ));
+      clearFields();
     } on FirebaseAuthException catch (e) {
       final erroMessage = e.message;
       Get.snackbar("Error", "",
@@ -76,16 +82,13 @@ class ScreenAuthenticationController extends GetxController {
             style: TextStyle(color: red),
           ));
     }
-    signupController.userNameController.text = "";
-    signupController.jobController.text = "";
-    signupController.emailController.text = "";
-    signupController.passwordController.text = "";
-    signupController.numberController.text = "";
-    imageController.stringOfimg = "";
+    Get.back();
+    Get.back();
   }
 
 //  Verify reset password Email
   Future verifyResetEmail() async {
+    Get.dialog(const LoadingWidget());
     try {
       await _auth.sendPasswordResetEmail(
           email: forgotController.emailController.text.trim());
@@ -105,5 +108,16 @@ class ScreenAuthenticationController extends GetxController {
             style: TextStyle(color: white),
           ));
     }
+    Get.back();
+  }
+  
+  clearFields()async{
+    signupController.userNameController.text = "";
+    signupController.jobController.text = "";
+    signupController.emailController.text = "";
+    signupController.passwordController.text = "";
+    signupController.numberController.text = "";
+    imageController.stringOfimg = "";
   }
 }
+

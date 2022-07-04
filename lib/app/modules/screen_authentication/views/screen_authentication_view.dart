@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_auth_example/app/data/common_widgets/colors.dart';
+import 'package:firebase_auth_example/app/data/common_widgets/loading_widget.dart';
 import 'package:firebase_auth_example/app/modules/home/views/home_view.dart';
 import 'package:firebase_auth_example/app/modules/screen_signin/views/screen_signin_view.dart';
 import 'package:flutter/material.dart';
@@ -21,11 +21,15 @@ class ScreenAuthenticationView extends GetView<ScreenAuthenticationController> {
         stream: firebaseAuth.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return  Center(child: CircularProgressIndicator(color: blue,));
+            return const Center(child: LoadingWidget());
           } else if (snapshot.hasError) {
             return const Center(child: Text("Something went wrong"));
           } else if (snapshot.hasData) {
-            return HomeView();
+            return GetBuilder<ScreenAuthenticationController>(
+              builder: (context) {
+                return  HomeView();
+              }
+            );
           } else {
             return ScreenSigninView();
           }
